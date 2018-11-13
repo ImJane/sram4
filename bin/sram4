@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+
+var Liftoff = require('liftoff');
+var argv = require('minimist')(process.argv.slice(2));
+var path = require('path');
+
+//基于fis3内核 新建名sram的体系
+var cli = new Liftoff({
+  name: 'sram4',
+  processTitle: 'sram4',
+  moduleName: 'sram4',
+  configName: 'fis-conf',
+  extensions: {
+    '.js': null
+  }
+});
+
+cli.launch({
+  cwd: argv.r || argv.root,
+  configPath: argv.f || argv.file
+}, function(env) {
+  var fis;
+  if (!env.modulePath) {
+    fis = require('../');
+  } else {
+    fis = require(env.modulePath);
+  }
+
+  //优先从当前目录 => node_modules/fis3的目录 => 全局
+  fis.require.paths.unshift(path.join(path.dirname(__dirname), 'node_modules'));
+  fis.require.paths.push(path.join(path.dirname(__dirname), 'node_modules/fis3/node_modules'));
+  fis.cli.run(argv, env);
+});

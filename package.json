@@ -1,0 +1,35 @@
+{
+  "name": "sram",
+  "version": "4.0.0",
+  "description": "sram4 Modular front end integration solutions",
+  "main": "index.js",
+  "preferGlobal": true,
+  "bin": {
+    "sram4": "bin/sram4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sram",
+    "sram4",
+    "framework",
+    "sram-framework",
+    "fis",
+    "fis3"
+  ],
+  "dependencies": {
+    "fis3": "~3.4.17",
+    "fis3-parser-less-2.x": "~0.1.4",
+    "fis-lint-jshint": "~0.0.10",
+    "liftoff": "2.2.1",
+    "minimist": "1.1.1",
+    "sram-command-install": "~0.1.0",
+    "sram-parser-stylus": "~0.0.1",
+    "sram-parser-babel6": "~0.0.3"
+  },
+  "author": "rinterest-team",
+  "license": "MIT",
+  "_from": "sram@4.0.0",
+  "_resolved": "http://registry.npm.taobao.org/sram/download/sram-4.0.0.tgz"
+}
