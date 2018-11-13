@@ -22,6 +22,7 @@
     "fis3": "~3.4.17",
     "fis3-parser-less-2.x": "~0.1.4",
     "fis-lint-jshint": "~0.0.10",
+    "fis-lint-eslint": "~2.1.0",
     "liftoff": "2.2.1",
     "minimist": "1.1.1",
     "sram-command-install": "~0.1.0",

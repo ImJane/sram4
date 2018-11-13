@@ -1,7 +1,4 @@
 
-
-
-
 module.exports = function(options){
   fis.config.set('name', options.name || 'wap');
   fis.config.set('version', options.version || '1.0.0');
@@ -30,8 +27,8 @@ module.exports = function(options){
 	  rExt: '.css'
 	})
 
-	fis.match(/^\/component|map\.json$/i, {
-	    release: '$1'
+	fis.match(/^\/(component|map)\.json$/i, {
+	    release: '${releasePrefix}/${name}/${version}/$1.json'
 	}); 
 
   // 内置
@@ -61,7 +58,6 @@ module.exports = function(options){
   if(options.jshint.bhold){
     fis.match(/^.*\.js$/i, {
       useLint: true,
-      ignored: [],
       lint: fis.plugin('jshint', options.jshint.options || {}),
     });
   }
@@ -116,7 +112,7 @@ module.exports = function(options){
     isMod: true,
     isComponents: true,
     url : '${urlPrefix}/w/$1.$2',
-    release : '${releasePrefix}/w/$1.$2'
+    release : '${releasePrefix}/${name}/${version}/w/$1.$2'
   })
 
   fis.match(/^\/components\/(.*\.js)$/i, {
@@ -124,13 +120,13 @@ module.exports = function(options){
     isMod: true,
     isComponents:true,  
     url : '${urlPrefix}/w/$1',
-    release : '${releasePrefix}/w/$1'
+    release : '${releasePrefix}/${name}/${version}/w/$1'
   });
 
   fis.match(/^\/components\/(.*)$/i,  {
     isComponents: true,
     url : '${urlPrefix}/w/$1',
-    release : '${releasePrefix}/w/$1'
+    release : '${releasePrefix}/${name}/${version}/w/$1'
   });
   
   fis.match(/^\/components\/.*\.tpl$/i,  {
@@ -142,20 +138,20 @@ module.exports = function(options){
     id : 's/$1.css',
     isStatic: true,
     url : '${urlPrefix}/s/$1.$2',
-    release : '${releasePrefix}/s/$1.$2'
+    release : '${releasePrefix}/${name}/${version}/s/$1.$2'
   });
 
   fis.match(/^\/(lib|assets)\/(.*\.js)$/i, {
     id : 's/$1',
     isStatic: true,
     url : '${urlPrefix}/s/$1',
-    release : '${releasePrefix}/s/$1'
+    release : '${releasePrefix}/${name}/${version}/s/$1'
   });
 
   fis.match(/^\/(lib|assets)\/(.*)$/i, {
     isStatic: true,
     url : '${urlPrefix}/s/$1',
-    release : '${releasePrefix}/s/$1'
+    release : '${releasePrefix}/${name}/${version}/s/$1'
   });
 
   //视图

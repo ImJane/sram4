@@ -82,7 +82,7 @@ function parseRequire(params){
 }
 
 // 解析sram.use, require
-fis.on('standard:js', function(file) {
+/*fis.on('standard:js', function(file) {
     var content = file.content;
     file.content = content.replace(rRequire, function(m, comment, type, params) {
         if (type) {
@@ -94,7 +94,7 @@ fis.on('standard:js', function(file) {
         }
         return m;
     })
-})
+})*/
 
 
 // 处理所有js，在头部增加 sram.define

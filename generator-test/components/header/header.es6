@@ -1,10 +1,12 @@
-import { type } from 'type';
+import type from 'type'
 
-function* generator({ id, type }){
-	let { code } = type;  
-	return {};
+function* generator({ id, a }){
+	let { code } = a;
+	return code + type + id;
 }
 
 async function as(){
 
 }
+generator();
+as();
