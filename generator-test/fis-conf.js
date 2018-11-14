@@ -1,4 +1,12 @@
+/*
+ componenet_modules 构建内部生态
+ 根目录下存在component.json，用于编写项目依赖
+ 使用git push 版本号 打上 -tag
+ 使用 sram install github_name/project_name@version 下载组件以及模块
+ */
+
 fis.framework.wap({
+	useSameNameRequire: false,
 	debug: true,
 	name: 'wap',
 	version: '1.0.12',

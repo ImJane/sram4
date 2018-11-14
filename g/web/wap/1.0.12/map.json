@@ -1,0 +1,30 @@
+{
+    "res": {
+        "s/sram.js": {
+            "uri": "/s/sram.js",
+            "type": "js"
+        },
+        "s/sram.var.css": {
+            "uri": "/s/sram.var.css",
+            "type": "css"
+        },
+        "w/header/header.js": {
+            "uri": "/w/header/header.js",
+            "type": "js",
+            "extras": {
+                "async": [
+                    "w/header/utils.js"
+                ]
+            }
+        },
+        "w/header/header.css": {
+            "uri": "/w/header/header.css",
+            "type": "css"
+        },
+        "w/header/utils.js": {
+            "uri": "/w/header/utils.js",
+            "type": "js"
+        }
+    },
+    "pkg": {}
+}

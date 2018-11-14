@@ -19,3 +19,11 @@ Object.defineProperty(global, 'sram4', {
 	writable : false,
 	value : fis
 });
+
+/*
+* 1 跳转回商品筛选页
+* 例如：path = '/pages/list/list?cate=computer&short=gz&cate_name=电脑&back=1'
+* 当back = 1时，将back回产品筛选页，并且会更新产品筛选的 筛选栏
+*
+* 4 跳转指定小程序页面 
+*/

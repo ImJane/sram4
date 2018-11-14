@@ -6,11 +6,13 @@ module.exports = function(options){
   fis.config.set('releasePrefix', options.release.web || '/web');
   fis.config.set('urlPrefix', options.urlPrefix || '');
   fis.config.set('framework', options.framework || {});
+  
+  require('../hooks/define');
 
 	fis.match('**', {
     release : false,
     useHash : false,
-    useSameNameRequire: true
+    useSameNameRequire: options.useSameNameRequire
 	});
 
 	fis.match(/^.*\.(css|js|styl|es6|less|jpeg|jpg|png)$/i, {
@@ -115,12 +117,12 @@ module.exports = function(options){
     release : '${releasePrefix}/${name}/${version}/w/$1.$2'
   })
 
-  fis.match(/^\/components\/(.*\.js)$/i, {
-    id : 'w/$1',
+  fis.match(/^\/components\/(.*)\.(?:js|es6)$/i, {
+    id : 'w/$1.js',
     isMod: true,
     isComponents:true,  
-    url : '${urlPrefix}/w/$1',
-    release : '${releasePrefix}/${name}/${version}/w/$1'
+    url : '${urlPrefix}/w/$1.js',
+    release : '${releasePrefix}/${name}/${version}/w/$1.js'
   });
 
   fis.match(/^\/components\/(.*)$/i,  {
@@ -134,21 +136,21 @@ module.exports = function(options){
   });
 
   //非模块化静态资源区
-  fis.match(/^\/(lib|assets)\/(.*)\.(styl|less|css)$/i, {
+  fis.match(/^\/(?:lib|assets)\/(.*)\.(styl|less|css)$/i, {
     id : 's/$1.css',
     isStatic: true,
     url : '${urlPrefix}/s/$1.$2',
     release : '${releasePrefix}/${name}/${version}/s/$1.$2'
   });
 
-  fis.match(/^\/(lib|assets)\/(.*\.js)$/i, {
+  fis.match(/^\/(?:lib|assets)\/(.*\.js)$/i, {
     id : 's/$1',
     isStatic: true,
     url : '${urlPrefix}/s/$1',
     release : '${releasePrefix}/${name}/${version}/s/$1'
   });
 
-  fis.match(/^\/(lib|assets)\/(.*)$/i, {
+  fis.match(/^\/(?:lib|assets)\/(.*)$/i, {
     isStatic: true,
     url : '${urlPrefix}/s/$1',
     release : '${releasePrefix}/${name}/${version}/s/$1'

@@ -2,6 +2,8 @@ var lang = fis.compile.lang;
 var path = require('path');
 var rRequire = /"(?:[^\\"\r\n\f]|\\[\s\S])*"|'(?:[^\\'\n\r\f]|\\[\s\S])*'|(\/\/[^\r\n\f]+|\/\*[\s\S]+?(?:\*\/|$))|\b(require|sram\.use)\s*\(\s*("(?:[^\\"\r\n\f]|\\[\s\S])*"|'(?:[^\\'\n\r\f]|\\[\s\S])*'|\[[\s\S]*?\])\s*/g;
 
+
+
 function findResource(name, dir) {
     var list = [
         name, // components/lazyload/./lib
@@ -23,7 +25,7 @@ function findResource(name, dir) {
 }
 
 function _findResource(name, path) {
-    var extList = ['.js', '.jsx', '.coffee'];
+    var extList = ['.js', '.jsx', '.es6', '.coffee'];
     var info = fis.uri(name, path);
 
     for (var i = 0, len = extList.length; i < len && !info.file; i++) {
@@ -35,7 +37,8 @@ function _findResource(name, path) {
 
 // 按相对路径查找， 增加相对路径js coffee jsx不完整路径的查找
 function onFileLookUpExt(file, v){
-    var m = /^['"]([0-9a-zA-Z\.\-_]+)(?:\/(.+))?['"]$/.exec(v);
+
+    var m = /^['"]([0-9a-zA-Z\.\-_]+)(?:\/|(.+))?['"]$/.exec(v);
     var cName = m[1];
     var subpath = m[2];
     var resolved, url;
@@ -45,10 +48,10 @@ function onFileLookUpExt(file, v){
     if (subpath) {
         resolved = findResource( cName + '/' + subpath, root );
     } else {
-        //否则增加index ./lib/index => ./lib/index.js or coffee jsx
+        //否则增加index ./lib/index => ./lib/index.js or coffee jsx es6
         resolved = findResource( cName + '/' + 'index', root );
         if (!resolved.file) {
-            //否则增加index ./lib/lib => ./lib/lib.js or coffee jsx
+            //否则增加index ./lib/lib => ./lib/lib.js or coffee jsx es6
             resolved = findResource( cName + '/' + cName, root );
         }
     }
@@ -64,15 +67,17 @@ function onFileLookUpExt(file, v){
 function parseRequire(params){
     var name = params.name;
     var m = params.m;
+    var file = params.file;
     if(!['sram.use', 'require'].includes(name)) return m;
     var info = parseParams(params.options);
     var use = info.hasBrackets;
-    var m = name + '(' + (use ? '[' : '') + info.params.map(function(v) {
-        var type = lang.require;
+    m = name + '(' + (use ? '[' : '') + info.params.map(function(v) {
+        var type = lang.async;
         var src;
         if(!(/^['"]/.test(v))){
             return;
         }
+
         if(src = onFileLookUpExt(file.file, v)){
             v = src
         }
@@ -82,19 +87,20 @@ function parseRequire(params){
 }
 
 // 解析sram.use, require
-/*fis.on('standard:js', function(file) {
+fis.on('standard:js', function(file) {
     var content = file.content;
     file.content = content.replace(rRequire, function(m, comment, type, params) {
         if (type) {
             m = parseRequire({
-                name: type
+                name: type,
                 m: m,
-                options: params
-            })    
+                options: params,
+                file
+            })  
         }
         return m;
     })
-})*/
+})
 
 
 // 处理所有js，在头部增加 sram.define
