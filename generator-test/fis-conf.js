@@ -16,6 +16,7 @@ fis.framework.wap({
 		web: ''
 	},
 	sramFramework: {
+		cache: true,
 		maxUrlLength: 1000,
 		alias: {},
 		combine: true,

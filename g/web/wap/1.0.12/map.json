@@ -20,11 +20,97 @@
         "w/header/header.css": {
             "uri": "/w/header/header.css",
             "type": "css"
-        },
+        }, 
         "w/header/utils.js": {
             "uri": "/w/header/utils.js",
             "type": "js"
         }
     },
     "pkg": {}
+}
+
+//第三方组件  使用framework增加别名控制， 可以直接使用模块名引用， 如遇到同名模块， 将首先从components抓取
+
+//根目录查找文件 使用@号  @component/header/header.es6
+
+//当前文件 相对查查 首先查找 ./lib  -> ./lib/index -> ./lib/lib
+
+//当在php模板中使用
+/*
+<?php $this->sram_require('@component/header/header.php', [
+    'data' => []
+]) ?>
+*/
+
+当在php模板使用 <?php $this->sram_require()?> 进行同步依赖，
+
+当在php模板script 使用 require时， 进行同步依赖
+
+当在php模板script 使用 sram.use, sram.async 时 进行异步依赖
+
+
+生成map
+
+用户请求-> https://rrzuji.com/header/header.php
+-> 后端搜索静态资源并渲染页面->
+
+搜索所有同步依赖
+并生成combo maxUrl等配置
+1.php
+<?php $this->sram_require(''); ?>
+<?php $this->sram_require(''); ?>
+
+生成placeholder
+
+script -> 
+
+使用async ->
+
+生成依赖
+
+当前端发起请求->
+
+/*sram.use(["cp", "cp1"], function(event){
+    
+}) */
+
+
+
+
+{
+    "res": {
+        "components/header/header.php": {
+            "uri": "",
+            "type": "php",
+            "deps": [
+                "components/header/header.js",
+                "components/header/header.css",
+                "components/utils/utils.js",
+                "footer",
+                "header"
+            ],
+            "extras": {
+                "async": [
+
+                ]
+            }
+        },
+        "components/header2/header2.php": {
+            "uri": "",
+            "type": "php",
+            "deps": [
+                "components/header/header.js",
+                "components/header/header.css",
+                "components/utils/utils.js"
+            ],
+            "extras": {
+                "async": [
+
+                ]
+            }
+        }
+    },
+    "combo": true,
+    "comboUrl": "",
+    "version": "1.0.0"
 }
