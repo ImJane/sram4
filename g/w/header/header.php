@@ -5,7 +5,7 @@
 </head>
 <body>
 	<script type="text/javascript">
-		var util = require("./util");
+		var util = require();
 		console.log(123)
 	</script>
 </body>

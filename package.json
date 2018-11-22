@@ -19,15 +19,16 @@
     "fis3"
   ],
   "dependencies": {
+    "extend": "^3.0.2",
+    "fis-lint-eslint": "~2.1.0",
+    "fis-lint-jshint": "~0.0.10",
     "fis3": "~3.4.17",
     "fis3-parser-less-2.x": "~0.1.4",
-    "fis-lint-jshint": "~0.0.10",
-    "fis-lint-eslint": "~2.1.0",
     "liftoff": "2.2.1",
     "minimist": "1.1.1",
     "sram-command-install": "~0.1.0",
-    "sram-parser-stylus": "~0.0.1",
-    "sram-parser-babel6": "~0.0.3"
+    "sram-parser-babel6": "~0.0.3",
+    "sram-parser-stylus": "~0.0.1"
   },
   "author": "rinterest-team",
   "license": "MIT",

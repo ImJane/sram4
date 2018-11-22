@@ -1,0 +1,25 @@
+{
+    "res": {
+        "assets/sram.js": {
+            "uri": "/assets/sram.js",
+            "type": "js"
+        },
+        "assets/sram.var.less": {
+            "uri": "/assets/sram.var.css",
+            "type": "css"
+        },
+        "w/header/header.js": {
+            "uri": "w/header/header.js",
+            "type": "js"
+        },
+        "w/header/header.css": {
+            "uri": "w/header/header.css",
+            "type": "css"
+        },
+        "w/header/utils.js": {
+            "uri": "w/header/utils.js",
+            "type": "js"
+        }
+    },
+    "pkg": {}
+}
