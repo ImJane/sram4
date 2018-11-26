@@ -3,19 +3,28 @@ let fs = require('fs');
 let util = require('../lib/util');
 let rRequire = /"(?:[^\\"\r\n\f]|\\[\s\S])*"|'(?:[^\\'\n\r\f]|\\[\s\S])*'|(\/\/[^\r\n\f]+|\/\*[\s\S]+?(?:\*\/|$))|\b(require|sram\.use)\s*\(\s*("(?:[^\\"\r\n\f]|\\[\s\S])*"|'(?:[^\\'\n\r\f]|\\[\s\S])*'|\[[\s\S]*?\])\s*/g;
 let lang = fis.compile.lang;
+let path = require('path');
+
+// 拼 rootPrefix
+function getRootReg(prefix){
+  prefix = prefix ? "(" + prefix + "?)" : '';
+  return new RegExp("^[\'\"]" + prefix + "([0-9a-zA-Z\\.\\-_]+)(?:\\/|(.+))?[\'\"]$");
+}
 
 // 按nodejs的规则查找js文件
-function onFileLookUpExt(file, v){
+function onFileLookUpExt(file, v, options){
     //首字母规则为@则直接获取根目录
-    var m = /^['"](@?)([0-9a-zA-Z\.\-_]+)(?:\/|(.+))?['"]$/.exec(v);
+    var m = getRootReg(options.rootPrefix).exec(v);
     var rootPrefix = m[1];
     var c = m[2];
     var subpath = m[3];
     var resolved, url;
-    var root = file ? file.dirname : fis.project.getProjectPath();
-    if(rootPrefix){
+    if(options.rootPrefix){
       root = fis.project.getProjectPath();
+    }else{
+      root = file ? file.dirname : fis.project.getProjectPath();
     }
+    
     if (subpath) {
         resolved = findResource( c + '/' + subpath, root );
     } else {
@@ -24,12 +33,44 @@ function onFileLookUpExt(file, v){
             resolved = findResource( c + '/' + c, root );
         }
     }
+    
     if (resolved.file) {
         url = '"' + resolved.file.getId() + '"';
     }
+
     return url;
 }
 
+function findResource(name, dir) {
+    var list = [
+        name, // components/lazyload/./lib
+        path.join(name, 'index'), // components/lazyload/./lib/index
+        path.join(name, path.basename(name)) // components/lazyload/./lib/lib
+    ];
+    var info;
+    // 过滤
+    while (list.length) {
+        name = list.shift();
+        info = _findResource(name, dir);
+        if (info && info.file) {
+          console.log(1)
+            break;
+        }
+    }
+
+    return info;
+}
+
+function _findResource(name, path) {
+    var extList = ['.js', '.jsx', '.es6', '.coffee'];
+    var info = fis.uri(name, path);
+
+    for (var i = 0, len = extList.length; i < len && !info.file; i++) {
+        info = fis.uri(name + extList[i], path);
+    }
+
+    return info;
+}
 
 // 统一加JSON报错处理
 function readFileRc(path){
@@ -64,8 +105,7 @@ module.exports = function(params){
     useHash : false,
     useSameNameRequire: params.useSameNameRequire
   });*/
-
-
+  let rootPrefix = params.rootPrefix || ''
   fis.on('compile:postprocessor', function(file){
     if(file.isJsLike && file.isMod){
       content = 'sram.define(\'' + file.getId() + '\', function(require, exports, module){\n' + file.getContent() + '\n\n});';
@@ -84,10 +124,12 @@ module.exports = function(params){
           var type = lang.require;
           var src;
           if(!(/^['"]/.test(v))) return;
-          /*if(src = onFileLookUpExt(file.file, v)){
+          if(src = onFileLookUpExt(file.file, v, {
+            rootPrefix: rootPrefix
+          })){
               v = src
           }
-          return type.wrap(v);*/
+          return type.wrap(v);
         }).join(',') + (use ? ']' : '')
         return m;
       }

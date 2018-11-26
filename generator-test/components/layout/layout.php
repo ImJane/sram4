@@ -5,8 +5,7 @@
 </head>
 <body>
 	<script type="text/javascript">
-		var util = require("./util");
-		console.log(123)
+		var header = require('@components/header');
 	</script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 sram.define('w/header/header.js', function(require, exports, module){
 undefined;
 
-var _utils = require();
+var _utils = require('./utils');
 
 var _utils2 = _interopRequireDefault(_utils);
 
