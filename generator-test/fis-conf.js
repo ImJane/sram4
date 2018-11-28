@@ -18,5 +18,5 @@ fis.framework.wap({
 	},
 	jshint: false,
 	eslint: false,
-	es6: false
+	es6: true
 });
